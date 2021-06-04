@@ -14,9 +14,10 @@ public class StudentRegistrationFormTest {
             email = "fet66@em.com",
             gender = "Other",
             mobile = "9876543210",
-            monthOfBirth = "june",
+            dayOfBirth = "28",
+            monthOfBirth = "August",
             yearOfBirth = "1980",
-            //dayOfWeek = "1980",
+            dayOfWeek = "Thursday",
             subject1 = "Chemistry",
             subject2 = "Accounting",
             hobby1 = "Sports",
@@ -43,6 +44,18 @@ public class StudentRegistrationFormTest {
         //select gender
         $("#genterWrapper").$(byText(gender)).click();
 
+        //Mobile
+        $("#userNumber").val(mobile);
+
+        ///dob
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").selectOption(monthOfBirth);
+        $(".react-datepicker__year-select").selectOption(yearOfBirth);
+        $(String.format("[aria-label='Choose %s, %s %sth, %s']",
+                dayOfWeek, monthOfBirth, dayOfBirth, yearOfBirth)).click();
+//        $(String.format("react-datepicker__day--0%s", dayOfBirth): not() react-datepicker__day--outside-month)
+//<div class="react-datepicker__day react-datepicker__day--028 react-datepicker__day--outside-month" tabindex="-1" aria-label="Choose Monday, July 28th, 1980" role="option" aria-disabled="false">28</div>
+//<div class="react-datepicker__day react-datepicker__day--028" tabindex="-1" aria-label="Choose Thursday, August 28th, 1980" role="option" aria-disabled="false">28</div>
 //        sleep(3000);
 
         //Assert
