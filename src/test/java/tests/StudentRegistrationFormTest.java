@@ -47,16 +47,21 @@ public class StudentRegistrationFormTest {
         //Mobile
         $("#userNumber").val(mobile);
 
-        ///dob
+        ///dob (August 28th 1980 Thursday)
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption(monthOfBirth);
         $(".react-datepicker__year-select").selectOption(yearOfBirth);
-        $(String.format("[aria-label='Choose %s, %s %sth, %s']",
-                dayOfWeek, monthOfBirth, dayOfBirth, yearOfBirth)).click();
-//        $(String.format("react-datepicker__day--0%s", dayOfBirth): not() react-datepicker__day--outside-month)
-//<div class="react-datepicker__day react-datepicker__day--028 react-datepicker__day--outside-month" tabindex="-1" aria-label="Choose Monday, July 28th, 1980" role="option" aria-disabled="false">28</div>
-//<div class="react-datepicker__day react-datepicker__day--028" tabindex="-1" aria-label="Choose Thursday, August 28th, 1980" role="option" aria-disabled="false">28</div>
-//        sleep(3000);
+        $(String.format(".react-datepicker__day--0%s:not(.react-datepicker__day--outside-month)", dayOfBirth)).click();
+        //alt.method for peek dob  $(String.format("[aria-label='Choose %s, %s %sth, %s']", dayOfWeek, monthOfBirth, dayOfBirth, yearOfBirth)).click();
+
+        //subj
+        $("#subjectsInput").val(subject1).pressEnter();
+
+        //hobby
+        $("#hobbiesWrapper").$(byText(hobby1)).click();
+        $("#hobbiesWrapper").$(byText(hobby2)).click();
+
+        sleep(3000);
 
         //Assert
     }
