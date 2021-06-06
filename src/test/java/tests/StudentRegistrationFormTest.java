@@ -1,15 +1,16 @@
 package tests;
 
+import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class StudentRegistrationFormTest {
+public class StudentRegistrationFormTest extends TestBase {
 
     //Test data
-    String  firstName = "Boba",
+    String firstName = "Boba",
             lastName = "Fet",
             email = "fet66@em.com",
             gender = "Other",
@@ -22,14 +23,19 @@ public class StudentRegistrationFormTest {
             subject2 = "Accounting",
             hobby1 = "Sports",
             hobby2 = "Reading",
-            picture = "testPic.png",
-            currentAddres = "Tatuine, MosIsly",
+            picture = "JPGsample.jpg",
+            currentAddres = "Tatooine Mos Eisley",
             state = "Haryana",
             city = "Panipat";
+
+    //cherking data
+    String title = "Thanks for submitting the form";
+
 
 
     @Test
     void sucsessfulRegistrationTest() {
+
         //Arrange
         //open site
         open("https://demoqa.com/automation-practice-form");
@@ -61,8 +67,43 @@ public class StudentRegistrationFormTest {
         $("#hobbiesWrapper").$(byText(hobby1)).click();
         $("#hobbiesWrapper").$(byText(hobby2)).click();
 
-        sleep(3000);
+        //Chose file
+        $("#uploadPicture").uploadFromClasspath("img/" + picture);
+        //alt. method $("#uploadPicture").uploadFile(new File("src/test/resources/img/" + picture));
+
+        //address
+        $("#currentAddress").val(currentAddres);
+
+        //State !!!need scrollTo
+        $("#state").scrollTo().click();
+        $("#state").$(byText(state)).click();
+
+        //City
+        $("#city").click();
+        $("#city").$(byText(city)).click();
+
+        //Submit
+        $("#submit").click();
 
         //Assert
+        $("#example-modal-sizes-title-lg").shouldHave(text(title));
+
+        //CHECKING_DATA
+        $(".table-responsive").shouldHave(text(firstNameForTest));
+        $(".table-responsive").shouldHave(text(emailForTest));
+        $(".table-responsive").shouldHave(text(phoneNumberForTest));
+        $(".table-responsive").shouldHave(text(dateForTest));
+        $(".table-responsive").shouldHave(text(firstNameForTest));
+        $(".table-responsive").shouldHave(text(lastNameForTest));
+        $(".table-responsive").shouldHave(text(emailForTest));
+        $(".table-responsive").shouldHave(text(phoneNumberForTest));
+        $(".table-responsive").shouldHave(text(dateForTest));
+        $(".table-responsive").shouldHave(text(subjectOneForTest));
+        $(".table-responsive").shouldHave(text(subjectTwoForTest));
+        $(".table-responsive").shouldHave(text(subjectThreeForTest));
+        $(".table-responsive").shouldHave(text(fileNameForTest));
+        $(".table-responsive").shouldHave(text(currentAddress));
+        $(".table-responsive").shouldHave(text(stateForTest));
+        $(".table-responsive").shouldHave(text(cityForTest));
     }
 }
