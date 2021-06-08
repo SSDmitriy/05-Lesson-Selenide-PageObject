@@ -2,6 +2,7 @@ package tests;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.Test;
+import pages.RegistrationFormPage;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
@@ -27,10 +28,11 @@ public class StudentRegistrationFormTest extends TestBase {
             currentAddres = "Tatooine Mos Eisley",
             state = "Haryana",
             city = "Panipat";
-
-    //cherking data
+    //table-tittle after submit
     String title = "Thanks for submitting the form";
 
+//create PAGE OBJECT
+    RegistrationFormPage registrationFormPage = new RegistrationFormPage();
 
 
     @Test
@@ -43,15 +45,23 @@ public class StudentRegistrationFormTest extends TestBase {
 
         //Act
         //fill fields
-        $("#firstName").val(firstName);
-        $("#lastName").val(lastName);
-        $("#userEmail").val(email);
+//        $("#firstName").val(firstName);
+//        $("#lastName").val(lastName);
+//        $("#userEmail").val(email);
+//
+//        //select gender
+//        $("#genterWrapper").$(byText(gender)).click();
+//
+//        //Mobile
+//        $("#userNumber").val(mobile);
 
-        //select gender
-        $("#genterWrapper").$(byText(gender)).click();
-
-        //Mobile
-        $("#userNumber").val(mobile);
+        //Act
+        //fill fields
+        registrationFormPage.inputFirstName(firstName);
+        registrationFormPage.inputLastName(lastName);
+        registrationFormPage.inputUserEmail(email);
+        registrationFormPage.specifyGender(gender);
+        registrationFormPage.inputMobile(mobile);
 
         ///dob (August 28th 1980 Thursday)
         $("#dateOfBirthInput").click();
