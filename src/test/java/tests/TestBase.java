@@ -3,6 +3,7 @@ package tests;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 
+//class for arrange
 public class TestBase {
 
     @BeforeAll

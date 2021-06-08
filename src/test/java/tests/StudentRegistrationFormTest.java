@@ -1,15 +1,21 @@
 package tests;
 
-import com.codeborne.selenide.Configuration;
+import components.CalendarComponent;
 import org.junit.jupiter.api.Test;
+import pages.AssertPage;
 import pages.RegistrationFormPage;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
+//main class with TEST DATA, TEST STEPS and ASSERTIONS
+//before test steps creating three PAGE OBJECTS:
+// -for fields
+// -for CALENDAR component
+// -for Assertions
 public class StudentRegistrationFormTest extends TestBase {
 
+    //----------
     //Test data
     String firstName = "Boba",
             lastName = "Fet",
@@ -19,96 +25,83 @@ public class StudentRegistrationFormTest extends TestBase {
             dayOfBirth = "28",
             monthOfBirth = "August",
             yearOfBirth = "1980",
-            dayOfWeek = "Thursday",
-            subject1 = "Chemistry",
-            subject2 = "Accounting",
+            //dayOfWeek = "Thursday",
+            subject = "Chemistry",
             hobby1 = "Sports",
             hobby2 = "Reading",
             picture = "JPGsample.jpg",
             currentAddres = "Tatooine Mos Eisley",
             state = "Haryana",
             city = "Panipat";
-    //table-tittle after submit
+    //table-tittle for checking after submit
     String title = "Thanks for submitting the form";
 
-//create PAGE OBJECT
+    //create PAGE OBJECTS
+    //for fields
     RegistrationFormPage registrationFormPage = new RegistrationFormPage();
-
+    //for CALENDAR component
+    CalendarComponent calendarComponent = new CalendarComponent();
+    //for Assertions
+    AssertPage assertPage = new AssertPage();
 
     @Test
     void sucsessfulRegistrationTest() {
 
+        //----------
         //Arrange
         //open site
         open("https://demoqa.com/automation-practice-form");
         $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
 
+        //----------
         //Act
-        //fill fields
-//        $("#firstName").val(firstName);
-//        $("#lastName").val(lastName);
-//        $("#userEmail").val(email);
-//
-//        //select gender
-//        $("#genterWrapper").$(byText(gender)).click();
-//
-//        //Mobile
-//        $("#userNumber").val(mobile);
-
-        //Act
-        //fill fields
+        //fill pers info
         registrationFormPage.inputFirstName(firstName);
         registrationFormPage.inputLastName(lastName);
         registrationFormPage.inputUserEmail(email);
+
+        //specify
         registrationFormPage.specifyGender(gender);
+
+        //mobile
         registrationFormPage.inputMobile(mobile);
 
-        ///dob (August 28th 1980 Thursday)
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption(monthOfBirth);
-        $(".react-datepicker__year-select").selectOption(yearOfBirth);
-        $(String.format(".react-datepicker__day--0%s:not(.react-datepicker__day--outside-month)", dayOfBirth)).click();
-        //alt.method for peek dob  $(String.format("[aria-label='Choose %s, %s %sth, %s']", dayOfWeek, monthOfBirth, dayOfBirth, yearOfBirth)).click();
+        //peek dob (August 28th 1980 Thursday)
+        calendarComponent.setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth);
 
         //subj
-        $("#subjectsInput").val(subject1).pressEnter();
+        registrationFormPage.inputSubject(subject);
 
-        //hobby
-        $("#hobbiesWrapper").$(byText(hobby1)).click();
-        $("#hobbiesWrapper").$(byText(hobby2)).click();
+        //specify hobby
+        registrationFormPage.specifyHobbies(hobby1, hobby2);
 
-        //Chose file
-        $("#uploadPicture").uploadFromClasspath("img/" + picture);
-        //alt. method $("#uploadPicture").uploadFile(new File("src/test/resources/img/" + picture));
+        //chose file
+        registrationFormPage.uploadFile(picture);
 
         //address
-        $("#currentAddress").val(currentAddres);
+        registrationFormPage.inputAddres(currentAddres);
 
-        //State !!!need scrollTo
-        $("#state").scrollTo().click();
-        $("#state").$(byText(state)).click();
+        //select State
+        registrationFormPage.selectState(state);
 
-        //City
-        $("#city").click();
-        $("#city").$(byText(city)).click();
+        //select City
+        registrationFormPage.selectCity(city);
 
         //Submit
-        $("#submit").click();
+        registrationFormPage.pressSubmit();
 
-        //Assert
-        $("#example-modal-sizes-title-lg").shouldHave(text(title));
-        $x("//td[text()='Student Name']").parent().shouldHave(text(firstName + " " + lastName));
-        $x("//td[text()='Student Email']").parent().shouldHave(text(email));
-        $x("//td[text()='Gender']").parent().shouldHave(text(gender));
-        $x("//td[text()='Mobile']").parent().shouldHave(text(mobile));
-        $x("//td[text()='Date of Birth']").parent().shouldHave(text(dayOfBirth + " " + monthOfBirth +
-                                                                                         "," + yearOfBirth));
-        $x("//td[text()='Subjects']").parent().shouldHave(text(subject1));
-        $x("//td[text()='Hobbies']").parent().shouldHave(text(hobby1));
-        $x("//td[text()='Picture']").parent().shouldHave(text(picture));
-        $x("//td[text()='Address']").parent().shouldHave(text(currentAddres));
-        $x("//td[text()='State and City']").parent().shouldHave(text(state + " " + city));
-
-
+        //----------
+        //Assertions
+        assertPage.checkTitle(title);
+        assertPage.checkStudentName(firstName, lastName);
+        assertPage.checkStudentEmail(email);
+        assertPage.checkGender(gender);
+        assertPage.checkMobile(mobile);
+        assertPage.checkDob(dayOfBirth, monthOfBirth, yearOfBirth);
+        assertPage.checkSubject(subject);
+        assertPage.checkHobbies(hobby1, hobby2);
+        assertPage.checkFileName(picture);
+        assertPage.checkCurrentAddres(currentAddres);
+        assertPage.checkStateAndCity(state, city);
     }
 }
