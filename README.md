@@ -1,3 +1,7 @@
-# 05-Lesson-Selenide-PageObject
+# 05-Lesson-Selenide
+Implementation "PageObject" pattern
 
-Project for make pattern "Page Object";
+Project contains 3 test classes:
+-with hardcoded test-data;
+-with random utils;
+-with java-faker library.
